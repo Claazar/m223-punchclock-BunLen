@@ -10,12 +10,33 @@ import static org.hamcrest.CoreMatchers.is;
 public class EntryResourceTest {
 
     @Test
-    public void testIndexEndpoint() {
+    public void testEntryEndpoints() {
         given()
           .when().get("/entries")
           .then()
              .statusCode(200)
              .body(is("[]"));
+
+        Long id = given()
+          .contentType("application/json")
+          .body("""
+              {"checkIn":"2026-09-29T08:00:00","checkOut":"2026-09-29T17:00:00"}
+              """)
+          .when().post("/entries")
+          .then()
+             .statusCode(200)
+             .body("checkIn", is("2026-09-29T08:00:00"))
+             .body("checkOut", is("2026-09-29T17:00:00"))
+             .extract().jsonPath().getLong("id");
+
+        given()
+          .when().get("/entries")
+          .then()
+             .statusCode(200)
+             .body("size()", is(1))
+             .body("[0].id", is(id.intValue()))
+             .body("[0].checkIn", is("2026-09-29T08:00:00"))
+             .body("[0].checkOut", is("2026-09-29T17:00:00"));
     }
 
 }
