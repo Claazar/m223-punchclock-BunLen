@@ -4,24 +4,23 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
 import ch.zli.m223.model.Entry;
+import ch.zli.m223.repository.EntryRepository;
 
 @ApplicationScoped
 public class EntryService {
     @Inject
-    private EntityManager entityManager;
+    private EntryRepository entryRepository;
 
     @Transactional
     public Entry createEntry(Entry entry) {
-        entityManager.persist(entry);
+        entryRepository.persist(entry);
         return entry;
     }
 
     public List<Entry> findAll() {
-        var query = entityManager.createQuery("FROM Entry", Entry.class);
-        return query.getResultList();
+        return entryRepository.listAll();
     }
 }
