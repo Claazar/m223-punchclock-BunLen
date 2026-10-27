@@ -5,19 +5,33 @@ import jakarta.persistence.*;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Entity
-public class Entry {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Entity // Marks class as DB entity
+public class Entry { // Entry is the TABLE NAME in DB
+  @Id // makes the following variable the primary key
+  @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto increment, 1, 2, 3, ...
   @Schema(readOnly = true)
   private Long id;
 
-  @Column(nullable = false)
+  @Column(nullable = false) // NOT NULL
   private LocalDateTime checkIn;
 
   @Column(nullable = false)
   private LocalDateTime checkOut;
+
+  @ManyToOne
+  @JoinColumn(name = "category_id")
+  private Category category;
+
+  @ManyToMany
+  @JoinTable(
+    name = "entry_tag",
+    joinColumns = @JoinColumn(name = "entry_id"),
+    inverseJoinColumns = @JoinColumn(name = "tag_id")
+  )
+  private Set<Tag> tags = new LinkedHashSet<>();
 
   public Long getId() {
     return id;
@@ -41,5 +55,21 @@ public class Entry {
 
   public void setCheckOut(LocalDateTime checkOut) {
     this.checkOut = checkOut;
+  }
+
+  public Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  public Set<Tag> getTags() {
+    return tags;
+  }
+
+  public void setTags(Set<Tag> tags) {
+    this.tags = tags;
   }
 }

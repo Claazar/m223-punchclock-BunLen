@@ -46,7 +46,10 @@ public class EntryController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Creates a new entry.", description = "Creates a new entry and returns the newly added entry.")
     public EntryDto create(@Valid EntryDto dto) {
-       Entry savedEntry = entryService.createEntry(entryMapper.toEntity(dto));
+       Entry savedEntry = entryService.createEntry(
+               entryMapper.toEntity(dto),
+               dto.getCategoryId(),
+               dto.getTagIds());
        return entryMapper.toDto(savedEntry);
     }
 
@@ -65,7 +68,11 @@ public class EntryController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Updates an entry.", description = "Updates a certain entry")
     public EntryDto update(@PathParam("id") Long id, @Valid EntryDto dto) {
-        Entry updatedEntry = entryService.updateEntry(id, entryMapper.toEntity(dto));
+        Entry updatedEntry = entryService.updateEntry(
+                id,
+                entryMapper.toEntity(dto),
+                dto.getCategoryId(),
+                dto.getTagIds());
         return entryMapper.toDto(updatedEntry);
     }
 }
