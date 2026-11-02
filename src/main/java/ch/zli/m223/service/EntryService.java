@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import ch.zli.m223.model.Category;
+import ch.zli.m223.model.ApplicationUser;
 import ch.zli.m223.model.Entry;
 import ch.zli.m223.model.Tag;
 import ch.zli.m223.repository.CategoryRepository;
@@ -27,7 +28,8 @@ public class EntryService {
     private TagRepository tagRepository;
 
     @Transactional // needed for all "changing" operators
-    public Entry createEntry(Entry entry, Long categoryId, List<Long> tagIds) {
+    public Entry createEntry(Entry entry, Long categoryId, List<Long> tagIds, ApplicationUser applicationUser) {
+        entry.setApplicationUser(applicationUser);
         setRelationships(entry, categoryId, tagIds);
         entryRepository.persist(entry);
         return entry;

@@ -25,6 +25,10 @@ public class Entry { // Entry is the TABLE NAME in DB
   @JoinColumn(name = "category_id")
   private Category category;
 
+  @ManyToOne
+  @JoinColumn(name = "application_user_id")
+  private ApplicationUser applicationUser;
+
   @ManyToMany
   @JoinTable(
     name = "entry_tag",
@@ -63,6 +67,14 @@ public class Entry { // Entry is the TABLE NAME in DB
 
   public void setCategory(Category category) {
     this.category = category;
+  }
+
+  public ApplicationUser getApplicationUser() {
+    return applicationUser;
+  }
+
+  public void setApplicationUser(ApplicationUser applicationUser) {
+    this.applicationUser = applicationUser;
   }
 
   public Set<Tag> getTags() {
