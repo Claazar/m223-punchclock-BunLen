@@ -3,6 +3,7 @@ package ch.zli.m223.service;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.quarkus.runtime.StartupEvent;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.event.Observes;
 import jakarta.transaction.Transactional;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -13,8 +14,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ch.zli.m223.model.Category;
+import ch.zli.m223.model.ApplicationUser;
 import ch.zli.m223.model.Entry;
 import ch.zli.m223.model.Tag;
+import ch.zli.m223.repository.ApplicationUserRepository;
 import ch.zli.m223.repository.CategoryRepository;
 import ch.zli.m223.repository.EntryRepository;
 import ch.zli.m223.repository.TagRepository;
@@ -31,6 +34,12 @@ public class ExampleDataService {
     @Inject 
     TagRepository tagRepository;
 
+    @Inject
+    ApplicationUserRepository applicationUserRepository;
+
+    private static final String DEMO_EMAIL = "jdoe@quarkus.io";
+    private static final String DEMO_PASSWORD = "demo-password";
+
     @ConfigProperty(name = "punchclock.example-data.enabled", defaultValue = "false")
     boolean enabled;
 
@@ -43,6 +52,13 @@ public class ExampleDataService {
 
     @Transactional
     public void createExampleData() {
+        if (applicationUserRepository.findApplicationUserByEmail(DEMO_EMAIL) == null) {
+            ApplicationUser demoUser = new ApplicationUser();
+            demoUser.setEmail(DEMO_EMAIL);
+            demoUser.setPassword(BcryptUtil.bcryptHash(DEMO_PASSWORD));
+            applicationUserRepository.persist(demoUser);
+        }
+
         if (categoryRepository.count() > 0 || tagRepository.count() > 0 || entryRepository.count() > 0) {
             return;
         }
