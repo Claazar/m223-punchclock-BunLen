@@ -3,6 +3,7 @@ package ch.zli.m223.service;
 import java.util.List;
 import java.util.LinkedHashSet;
 
+import DTO.TimeSummaryDto;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,9 @@ public class EntryService {
     @Inject
     private TagRepository tagRepository;
 
+    @Inject
+    private TimeSummaryService timeSummaryService;
+
     @Transactional // needed for all "changing" operators
     public Entry createEntry(Entry entry, Long categoryId, List<Long> tagIds, ApplicationUser applicationUser) {
         entry.setApplicationUser(applicationUser);
@@ -37,6 +41,10 @@ public class EntryService {
 
     public List<Entry> findAll() {
         return entryRepository.listWithRelationships();
+    }
+
+    public List<TimeSummaryDto> getTimeSummaries() {
+        return timeSummaryService.calculateSummaryPerDay(entryRepository.listWithRelationships());
     }
 
     public Entry findById(Long id) {

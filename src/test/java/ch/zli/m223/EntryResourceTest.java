@@ -102,6 +102,13 @@ public class EntryResourceTest {
              .body("tagIds", is(java.util.List.of(tagId.intValue())));
 
         given()
+          .when().get("/statistics/time-summaries")
+          .then()
+             .statusCode(200)
+             .body("2026-09-29", is("09:00:00"))
+             .body("2026-10-01", is("08:00:00"));
+
+        given()
           .when().get("/entry-details/" + relatedEntryId)
           .then()
              .statusCode(200)
