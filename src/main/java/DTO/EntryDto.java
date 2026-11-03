@@ -28,6 +28,8 @@ public class EntryDto {
 
   private List<Long> tagIds = new ArrayList<>();
 
+  private String description;
+
   public Long getId() {
     return id;
   }
@@ -66,6 +68,14 @@ public class EntryDto {
 
   public void setCheckOut(LocalDateTime checkOut) {
     this.checkOut = checkOut;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   @JsonIgnore

@@ -21,6 +21,9 @@ public class Entry { // Entry is the TABLE NAME in DB
   @Column(nullable = false)
   private LocalDateTime checkOut;
 
+  @Column(nullable = true)
+  private String description;
+
   @ManyToOne
   @JoinColumn(name = "category_id")
   private Category category;
@@ -83,5 +86,13 @@ public class Entry { // Entry is the TABLE NAME in DB
 
   public void setTags(Set<Tag> tags) {
     this.tags = tags;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 }
