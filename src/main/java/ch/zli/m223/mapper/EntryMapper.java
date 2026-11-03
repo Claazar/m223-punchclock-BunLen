@@ -21,6 +21,7 @@ public class EntryMapper {
         Entry entry = new Entry();
         entry.setCheckIn(dto.getCheckIn());
         entry.setCheckOut(dto.getCheckOut());
+        entry.setDescription(dto.getDescription());
         return entry;
     }
 
@@ -30,6 +31,7 @@ public class EntryMapper {
         dto.setId(entry.getId());
         dto.setCheckIn(entry.getCheckIn());
         dto.setCheckOut(entry.getCheckOut());
+        dto.setDescription(entry.getDescription());
         dto.setCategoryId(entry.getCategory() == null ? null : entry.getCategory().getId());
         dto.setTagIds(entry.getTags().stream()
                 .map(Tag::getId)
@@ -42,6 +44,7 @@ public class EntryMapper {
         dto.setId(entry.getId());
         dto.setCheckIn(entry.getCheckIn());
         dto.setCheckOut(entry.getCheckOut());
+        dto.setDescription(entry.getDescription());
 
         Category category = entry.getCategory();
         dto.setCategory(category == null ? null : categoryMapper.toDto(category));

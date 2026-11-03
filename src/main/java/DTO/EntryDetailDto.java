@@ -8,6 +8,7 @@ public class EntryDetailDto {
   private Long id;
   private LocalDateTime checkIn;
   private LocalDateTime checkOut;
+  private String description;
   private CategoryDto category;
   private List<TagDto> tags = new ArrayList<>();
 
@@ -33,6 +34,14 @@ public class EntryDetailDto {
 
   public void setCheckOut(LocalDateTime checkOut) {
     this.checkOut = checkOut;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public CategoryDto getCategory() {
